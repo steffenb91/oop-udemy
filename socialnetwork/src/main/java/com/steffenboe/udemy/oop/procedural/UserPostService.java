@@ -51,8 +51,9 @@ public class UserPostService {
 
     // Iteration VII
     void readNotifications(User user) {
-        for (Entry<Notification, ReadingState> entry : user.getNotifications().entrySet()) {
-            System.out.println(String.format("Notification for user %s: %s", user, entry.getKey().getContent()));
+        for (Entry<Notification, ReadingState> entry : user.getNotifications().entrySet().stream()
+                .filter(entry -> ReadingState.UNREAD.equals(entry.getValue())).toList()) {
+            System.out.println(String.format("%s", entry.getKey().getContent()));
             entry.setValue(ReadingState.READ);
         }
     }
