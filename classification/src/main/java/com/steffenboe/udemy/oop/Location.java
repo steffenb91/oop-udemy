@@ -1,13 +1,17 @@
 package com.steffenboe.udemy.oop;
 
-public record Location(double altitude, double longitude, LocationType type) {
-
-    public boolean isAirport() {
-        return LocationType.AIRPORT.equals(type);
-    }
+public class Location {
 
     public boolean isPort() {
-        return LocationType.PORT.equals(type);
+        return false;
+    }
+
+    public boolean isAirport() {
+        return false;
+    }
+
+    public Object type() {
+        return null;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.steffenboe.udemy.oop;
 
-public enum LocationType {
+public class LocationType {
 
-    NONE, AIRPORT, PORT;
 }
