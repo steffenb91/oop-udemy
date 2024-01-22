@@ -14,12 +14,10 @@ public class Comment {
         this.content = content;
     }
 
-    // Iteration IV
     public User getCommenter() {
         return commenter;
     }
 
-    // Iteration VI
     public List<Like> getLikes() {
         return likes;
     }

@@ -27,9 +27,9 @@ public class Post {
     }
 
     private void notifyAll(String message) {
-        creator.addNotification(new Notification(message));
+        creator.addNotification(new OnNewCommentNotification(message));
         for (Post comment : comments) {
-            comment.creator.addNotification(new Notification(message));
+            comment.creator.addNotification(new OnNewCommentNotification(message));
         }
     }
 

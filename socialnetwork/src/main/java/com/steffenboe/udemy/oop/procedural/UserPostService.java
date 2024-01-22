@@ -28,11 +28,11 @@ public class UserPostService {
         }
     }
 
-    // Iteration IV
     void commentPost(User commenter, Post post, String content) {
         post.addComment(new Comment(commenter, content));
         User creator = post.getCreator();
-        String message = String.format("User %s commented on your post: %s...", commenter, content.substring(0, 15));
+        String message = String.format("User %s commented on your post: %s...",
+                commenter, content.substring(0, 15));
         creator.addNotification(new Notification(message));
         for (Comment comment : post.getComments()) {
             User commentCommenter = comment.getCommenter();

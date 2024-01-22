@@ -7,9 +7,7 @@ public class Post {
 
     private String content;
     private List<Comment> comments = new ArrayList<>();
-    // Iteration IV
     private User creator;
-    // Iteration VI
     private List<Like> likes = new ArrayList<>();
 
     public Post(String content) {

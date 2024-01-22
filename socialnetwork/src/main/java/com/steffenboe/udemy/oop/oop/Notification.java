@@ -1,10 +1,10 @@
 package com.steffenboe.udemy.oop.oop;
 
-public class Notification {
+public abstract class Notification {
 
-    private String content;
+    protected String content;
 
-    public Notification(String content) {
+    protected Notification(String content) {
         this.content = content;
     }
 

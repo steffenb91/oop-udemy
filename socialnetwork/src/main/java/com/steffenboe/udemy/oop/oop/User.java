@@ -1,7 +1,9 @@
 package com.steffenboe.udemy.oop.oop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -11,8 +13,10 @@ public class User {
     private Feed feed = new Feed();
     private Set<User> followers = new HashSet<>();
     private Map<Notification, ReadingState> notifications = new HashMap<>();
+        // filter
+    private List<Class<? extends Notification>> enabledNotificationTypes = new ArrayList<>();
 
-    public void postNew(String content) {
+    public void createPost(String content) {
         Post newPost = new Post(this, content);
         feed.add(newPost);
         notifyFollowers(newPost);
@@ -22,7 +26,7 @@ public class User {
         for (User follower : followers) {
             follower.feed.add(newPost);
             follower.addNotification(
-                    new Notification(String.format("User %s published a new post!", this)));
+                    new OnNewPostNotification(String.format("User %s published a new post!", this)));
         }
     }
 
@@ -38,7 +42,13 @@ public class User {
     }
 
     public void addNotification(Notification notification) {
-        notifications.put(notification, ReadingState.UNREAD);
+        if (enabledNotificationTypes.contains(notification.getClass())) {
+            notifications.put(notification, ReadingState.UNREAD);
+        }
+    }
+
+    public void enable(Class<? extends Notification> enable){
+        enabledNotificationTypes.add(enable);
     }
 
 }
