@@ -16,25 +16,24 @@ public class Post {
     }
 
     public void addComment(Post newcomment) {
-        String message = toPreviewMessage(newcomment);
-        notifyAll(message);
+        notifyAll(newcomment);
         comments.add(newcomment);
     }
 
-    private String toPreviewMessage(Post newcomment) {
-        return String.format("User %s commented on your post: %s...", newcomment.creator,
-                newcomment.content.substring(0, 15));
-    }
-
-    private void notifyAll(String message) {
-        creator.addNotification(new OnNewCommentNotification(message));
+    private void notifyAll(Post newComment) {
+        creator.addNotification(new OnNewCommentNotification(newComment.creator, this));
         for (Post comment : comments) {
-            comment.creator.addNotification(new OnNewCommentNotification(message));
+            comment.creator.addNotification(new OnNewCommentNotification(newComment.creator, this));
         }
     }
 
     public void addLike(Like like) {
         likes.add(like);
+    }
+
+    @Override
+    public String toString() {
+        return content;
     }
 
 }

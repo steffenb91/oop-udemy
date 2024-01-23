@@ -13,8 +13,8 @@ public class User {
     private Feed feed = new Feed();
     private Set<User> followers = new HashSet<>();
     private Map<Notification, ReadingState> notifications = new HashMap<>();
-        // filter
-    private List<Class<? extends Notification>> enabledNotificationTypes = new ArrayList<>();
+    // filter
+    private List<Notification> enabledNotificationTypes = new ArrayList<>();
 
     public void createPost(String content) {
         Post newPost = new Post(this, content);
@@ -25,8 +25,7 @@ public class User {
     private void notifyFollowers(Post newPost) {
         for (User follower : followers) {
             follower.feed.add(newPost);
-            follower.addNotification(
-                    new OnNewPostNotification(String.format("User %s published a new post!", this)));
+            follower.addNotification(new OnNewPostNotification(this));
         }
     }
 
@@ -34,21 +33,21 @@ public class User {
         other.followers.add(this);
     }
 
-    public void readNotifications() {
+    public void handleNotifications() {
         for (Entry<Notification, ReadingState> entry : notifications.entrySet()) {
-            System.out.println(String.format("Notification for user %s: %s", this, entry.getKey().getContent()));
+            entry.getKey().handle();
             entry.setValue(ReadingState.READ);
         }
     }
 
     public void addNotification(Notification notification) {
-        if (enabledNotificationTypes.contains(notification.getClass())) {
+        if (enabledNotificationTypes.stream().anyMatch(n -> n.hasSameType(notification))) {
             notifications.put(notification, ReadingState.UNREAD);
         }
     }
 
-    public void enable(Class<? extends Notification> enable){
-        enabledNotificationTypes.add(enable);
+    public void enable(Notification notification) {
+        enabledNotificationTypes.add(notification);
     }
 
 }

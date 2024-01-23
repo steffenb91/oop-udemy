@@ -1,15 +1,9 @@
 package com.steffenboe.udemy.oop.oop;
 
-public abstract class Notification {
+public interface Notification {
 
-    protected String content;
-
-    protected Notification(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
+    void handle();
+    
+    boolean hasSameType(Notification other);
 
 }
