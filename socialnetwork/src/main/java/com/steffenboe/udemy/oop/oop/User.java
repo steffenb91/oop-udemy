@@ -2,36 +2,28 @@ package com.steffenboe.udemy.oop.oop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class User {
 
-    private Feed feed = new Feed();
-    private Set<User> followers = new HashSet<>();
+    private Feed feed;
     private Map<Notification, ReadingState> notifications = new HashMap<>();
-        // filter
+    // filter
     private List<Class<? extends Notification>> enabledNotificationTypes = new ArrayList<>();
 
-    public void createPost(String content) {
-        Post newPost = new Post(this, content);
-        feed.add(newPost);
-        notifyFollowers(newPost);
-    }
-
-    private void notifyFollowers(Post newPost) {
-        for (User follower : followers) {
-            follower.feed.add(newPost);
-            follower.addNotification(
-                    new OnNewPostNotification(String.format("User %s published a new post!", this)));
-        }
+    public User(Feed feed) {
+        this.feed = feed;
     }
 
     public void follow(User other) {
-        other.followers.add(this);
+        other.feed.register(this);
+    }
+
+    public void onNewPost(Post post) {
+        feed.addPost(post);
+        addNotification(new OnNewPostNotification("Someone you followed posted a new post!"));
     }
 
     public void readNotifications() {
@@ -44,11 +36,16 @@ public class User {
     public void addNotification(Notification notification) {
         if (enabledNotificationTypes.contains(notification.getClass())) {
             notifications.put(notification, ReadingState.UNREAD);
+            System.out.println(notification.getContent());
         }
     }
 
-    public void enable(Class<? extends Notification> enable){
+    public void enable(Class<? extends Notification> enable) {
         enabledNotificationTypes.add(enable);
+    }
+
+    public void printFeed() {
+        System.out.println("User " + this + ": " + feed);
     }
 
 }

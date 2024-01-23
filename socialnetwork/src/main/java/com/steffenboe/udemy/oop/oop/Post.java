@@ -37,4 +37,8 @@ public class Post {
         likes.add(like);
     }
 
+    public String content() {
+        return content;
+    }
+
 }
