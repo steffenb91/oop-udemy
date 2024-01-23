@@ -11,6 +11,7 @@ public class User {
     private Feed feed = new Feed();
     private Set<User> followers = new HashSet<>();
     private Map<Notification, ReadingState> notifications = new HashMap<>();
+    private Set<NotificationType> enabledNotificationTypes = new HashSet<>();
 
     public void postNew(String content) {
         Post newPost = new Post(this, content);
@@ -38,7 +39,13 @@ public class User {
     }
 
     public void addNotification(Notification notification) {
-        notifications.put(notification, ReadingState.UNREAD);
+        if(enabledNotificationTypes.contains(notification.type())){
+            notifications.put(notification, ReadingState.UNREAD);
+        }
+    }
+
+    public void addNotificationType(NotificationType type){
+        enabledNotificationTypes.add(type);
     }
 
 }
